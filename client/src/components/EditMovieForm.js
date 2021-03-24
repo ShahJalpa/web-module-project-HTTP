@@ -38,12 +38,13 @@ const EditMovieForm = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+		//Add in the api call needed to update the server with our updated movie data.
 		axios
 		  .put(`http://localhost:5000/api/movies/${id}`, movie)
 		  .then((response) => {
 			  console.log(response)
-			  props.setMovies(response.data)
-			  push(`/movies/${id}`);
+			  props.setMovies(response.data) //updated list of movies is saved to our global state
+			  push(`/movies/${id}`); //Redirect the user to the currently edited movie's individual info page.
 		  })
 		  .catch((error) => {
 			  console.log(error);
@@ -86,7 +87,7 @@ const EditMovieForm = (props) => {
 				</div>
 				<div className="modal-footer">			    
 					<input type="submit" className="btn btn-info" value="Save"/>
-					<Link to={`/movies/1`}><input type="button" className="btn btn-default" value="Cancel"/></Link>
+					<Link to={`/movies/${id}`}><input type="button" className="btn btn-default" value="Cancel"/></Link>
 				</div>
 			</form>
 		</div>
