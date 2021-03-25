@@ -48,7 +48,7 @@ const AddMovieForm = (props) => {
         axios
           .post('http://localhost:5000/api/movies', newMovie)
           .then((response) => {
-            setMovies(newMovie)
+            setMovies(response.data)
 			console.log(response)
 			push('/movies')
           })
