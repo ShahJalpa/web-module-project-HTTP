@@ -8,6 +8,7 @@ import MovieHeader from './components/MovieHeader';
 
 import EditMovieForm from './components/EditMovieForm';
 import FavoriteMovieList from './components/FavoriteMovieList';
+import AddMovieForm from './components/AddMovieForm';
 
 import axios from 'axios';
 
@@ -52,6 +53,11 @@ const App = (props) => {
 
             <Route path="/movies/:id">
               <Movie deleteMovie={deleteMovie}/>
+            </Route>
+
+            {/* Add in a route that allows access to AddMovieForm. */}
+            <Route path="/movies/add">
+              <AddMovieForm setMovies={setMovies}/>
             </Route>
 
             <Route path="/movies">
