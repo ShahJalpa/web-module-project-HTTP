@@ -12,7 +12,7 @@ const AddMovieForm = (props) => {
 
     const {setMovies} = props;
 
-    const initialMovieFormValues = {
+    const initialValues = {
         title:"",
 		director: "",
 		genre: "",
@@ -20,56 +20,70 @@ const AddMovieForm = (props) => {
 		description: ""
     }
 
-    const [addMovieFormValues, setAddMovieFormValues] = useState(initialMovieFormValues);
+    const [formValues, setFormValues] = useState(initialValues);
 
-    const handleAddMovieSaveButton = (event) => {
-        event.preventDefault();
-        //console.log("save")
-        axios
-          .post('http://localhost:5000/api/movies', addMovieFormValues)
-          .then((response) => {
-              setMovies(response.data);
-              console.log(response)
-          })
-          .catch((error) => {
-              console.error(error)
-          })
-    }
-    const handleChangeFormValue = (event) => {
-        setAddMovieFormValues({
-            ...addMovieFormValues,
-            [event.target.name]: event.target.vlaue
+    const handleChange = (event) => {
+        setFormValues({
+            ...formValues,
+            [event.target.name]: event.target.value
         })
         //console.log(event.target.value);
+    }
+
+	const handleSaveButton = (event) => {
+        event.preventDefault();
+        console.log(formValues);
+
+		const newMovie = {
+			id: new Date(),
+			title: formValues.title,
+			director: formValues.director,
+			genere: formValues.genre,
+			metascore: formValues.metascore,
+			description: formValues.description
+		}
+
+		console.log(newMovie)
+
+        axios
+          .post('http://localhost:5000/api/movies', newMovie)
+          .then((response) => {
+            setMovies(newMovie)
+			console.log(response)
+			push('/movies')
+          })
+          .catch((error) => {
+              console.error("error: ", error);
+          })
     }
 
     return(
         <div className="col">
 		<div className="modal-content">
-			<form onSubmit={handleAddMovieSaveButton}>
+			<form onSubmit={handleSaveButton}>
 				<div className="modal-header">						
 					<h4 className="modal-title">Add a new movie </h4>
 				</div>
                 <div className="modal-body">					
 					<div className="form-group">
 						<label>Title</label>
-						<input  value={addMovieFormValues.title} onChange={handleChangeFormValue} name="title" type="text" className="form-control"/>
+						<input  value={formValues.title} onChange={handleChange} name="title" type="text" className="form-control"/>
 					</div>
 					<div className="form-group">
 						<label>Director</label>
-						<input value={addMovieFormValues.director} onChange={handleChangeFormValue} name="director" type="text" className="form-control"/>
+						<input value={formValues.director} onChange={handleChange} name="director" type="text" className="form-control"/>
 					</div>
 					<div className="form-group">
 						<label>Genre</label>
-						<input value={addMovieFormValues.genre} onChange={handleChangeFormValue} name="genre" type="text" className="form-control"/>
+						<input value={formValues.genre} onChange={handleChange} name="genre" type="text" className="form-control"/>
 					</div>
 					<div className="form-group">
 						<label>Metascore</label>
-						<input value={addMovieFormValues.metascore} onChange={handleChangeFormValue} name="metascore" type="number" className="form-control"/>
+						<input value={formValues.metascore} onChange={handleChange} name="metascore" type="number" className="form-control"/>
 					</div>		
 					<div className="form-group">
 						<label>Description</label>
-						<textarea value={addMovieFormValues.description} onChange={handleChangeFormValue} name="description" className="form-control"></textarea>
+						<textarea value={formValues.description} onChange={handleChange} name="description" className="form-control"></textarea>
 					</div>
 									
 				</div>
