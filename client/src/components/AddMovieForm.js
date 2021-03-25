@@ -22,21 +22,31 @@ const AddMovieForm = (props) => {
 
     const [addMovieFormValues, setAddMovieFormValues] = useState(initialMovieFormValues);
 
-    const handleAddMovieSubmitButton = () => {
-
+    const handleAddMovieSaveButton = (event) => {
+        event.preventDefault();
+        //console.log("save")
+        axios
+          .post('http://localhost:5000/api/movies', addMovieFormValues)
+          .then((response) => {
+              setMovies(response.data);
+              console.log(response)
+          })
+          .catch((error) => {
+              console.error(error)
+          })
     }
     const handleChangeFormValue = (event) => {
         setAddMovieFormValues({
             ...addMovieFormValues,
             [event.target.name]: event.target.vlaue
         })
-        console.log(event.target.value);
+        //console.log(event.target.value);
     }
 
     return(
         <div className="col">
 		<div className="modal-content">
-			<form onSubmit={handleAddMovieSubmitButton}>
+			<form onSubmit={handleAddMovieSaveButton}>
 				<div className="modal-header">						
 					<h4 className="modal-title">Add a new movie </h4>
 				</div>
